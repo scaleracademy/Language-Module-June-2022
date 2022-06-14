@@ -15,6 +15,6 @@ For second expression =>
 
 
 For First expression => 
-[] coerces to empty string, and {} returns [Object Object] which are typecasted to string, so returns '[Object Objects]'                
+[] coerces to empty string, and {} returns [Object Object] which are typecasted to string, so returns '[Object Object]'                
 
 
