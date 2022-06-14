@@ -14,7 +14,7 @@ console.log(arr1 === arr2) // false
 
 console.log(arr1 == arr2) // false
 
-console.log(arr1.toString() == arr2.toString()) // true
+console.log(arr1.toString() === arr2.toString()) // true
 
 let arr3 = arr1 
 
