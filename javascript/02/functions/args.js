@@ -7,3 +7,4 @@ function display(a, b) {
 display(2, 4);
 display(3, 6, 8);
 display(3);
+//this is how function take arguements.
