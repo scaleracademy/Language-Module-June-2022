@@ -18,6 +18,7 @@ let fun1 = (x, y) => {
   if (typeof x === 'number') return x * y 
   if (typeof x === 'string') return x + y
 }
+let fun2 = (x , y) => typeof x === 'number' ? x * y : x + y;
 
 console.log(fun1(2, 3));
 console.log(fun1('2', '3'));
@@ -50,5 +51,3 @@ obj1.nft()
 console.log("========================")
 obj2.aft()
 obj2.nft()
-
-
