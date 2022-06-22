@@ -23,12 +23,32 @@ console.log(fun1(2, 3));
 console.log(fun1('2', '3'));
 
 this.a = 10;
+let obj1 = { k : 'asdasd '}
+let obj2 = { p: true, q: 10 }
 
 let arrowFunThis = () => {
-  console.log(this);
+  console.log(this); // "lexical this"
 }
 
 function normalFunThis () {
   console.log(this);
 }
+
+obj1.aft = arrowFunThis
+obj1.nft = normalFunThis
+obj2.aft = arrowFunThis
+obj2.nft = normalFunThis
+
+console.log("========================")
+
+arrowFunThis()
+normalFunThis()
+console.log("========================")
+
+obj1.aft()
+obj1.nft()
+console.log("========================")
+obj2.aft()
+obj2.nft()
+
 
