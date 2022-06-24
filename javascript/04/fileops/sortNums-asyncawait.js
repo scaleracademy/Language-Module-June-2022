@@ -1,5 +1,33 @@
-const fs = require('fs').promises;
+const fsOld = require('fs');
 const os = require('os');
+const util = require('util');
+
+util.promisify
+
+const fs = {
+  readFile: function (fileName) {
+    return new Promise((resolve, reject) => {
+      fsOld.readFile(fileName, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  },
+  writeFile: function (fileName, data) {
+    return new Promise((resolve, reject) => {
+      fsOld.writeFile(fileName, data, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  },
+};
 
 /** BASIC
  * 1. read the numbers from file1.txt
@@ -22,7 +50,7 @@ fs.readFile(`${__dirname}/file1.txt`)
       const nums = [...nums1, ...nums2].sort((a, b) => a - b);
       const output = nums.join(os.EOL);
 
-      return fs.writeFile(`${__dirname}/a/out.txt`, output)
+      return fs.writeFile(`${__dirname}/out.txt`, output)
         .then(() => { console.log('all done'); });
     }))
   .catch(err1 => {
