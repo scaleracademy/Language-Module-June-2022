@@ -13,3 +13,17 @@ const fs = require('fs');
  * 3. write the sorted numbers to out.txt
  */
 
+// Basic Code
+const fs = require('fs');
+
+fs.readFile(`${__dirname}/file1.txt`, (err, data) => {
+  if (err) throw err;
+  
+  const sorted = data.toString().split("\r\n").sort().join("\r\n");
+
+  fs.writeFile(`${__dirname}/out.txt`, sorted, (error) => {
+    if (error) throw error;
+    console.log(' write success');
+  })
+
+})
