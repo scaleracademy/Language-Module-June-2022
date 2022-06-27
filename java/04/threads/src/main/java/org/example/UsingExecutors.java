@@ -1,13 +1,13 @@
 package org.example;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class UsingExecutors {
 
-    public static void main(String[] args) {
-        ExecutorService executor = Executors.newFixedThreadPool(5);
+    public static void main(String[] args) throws InterruptedException {
+        ExecutorService executor = Executors.newWorkStealingPool(5);
 
         Runnable printThreadName = () -> {
             for (int i = 0; i < 5; i++) {
@@ -16,9 +16,8 @@ public class UsingExecutors {
         };
 
         for (int i = 0; i < 20; i++) {
-            executor.execute(printThreadName);
+            executor.submit(printThreadName);
         }
-
-        executor.shutdown();
+        executor.awaitTermination(2, TimeUnit.SECONDS);
     }
 }
