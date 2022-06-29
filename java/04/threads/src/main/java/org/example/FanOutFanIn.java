@@ -1,8 +1,6 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class FanOutFanIn {
 
@@ -33,21 +31,31 @@ public class FanOutFanIn {
             }
         }
 
+        private synchronized void printNext() {
+            printItem(i);
+            i++;
+            notify();
+        }
+
         private void printItem(int index) {
             System.out.println(Thread.currentThread().getName() + "  :  " + index);
         }
+
         void run() throws InterruptedException {
             i = 0;
             while (i <= 10) {
-                printItem(i);
-                i++;
+                printNext();
             }
+            /**
+             * Current Problem: some numbers get printed twice
+             * Assignment: fix that.
+             */
+
             // print 11 to 40 using 4 threads
             for (int j = 0; j < 4; j++) {
                 threads.add(new Thread(() -> {
                     while (i <= 40) {
-                        printItem(i);
-                        i++;
+                        printNext();
                     }
                 }));
             }
@@ -59,8 +67,7 @@ public class FanOutFanIn {
 
             // print 41-50 using single thread again
             while (i <= 50) {
-                printItem(i);
-                i++;
+                printNext();
             }
         }
     }
