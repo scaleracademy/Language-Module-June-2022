@@ -11,30 +11,27 @@ public class Synchronisation {
         //        final Object lock1 = new Object();
 //        final Object lock2 = new Object();
 
-        void syncWait1() {
-            synchronized (this) {
-                System.out.println(Thread.currentThread().getName() + "  start1 : obj" + id);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println(Thread.currentThread().getName() + "  end1 : obj" + id);
+        synchronized void syncWait1() {
+            System.out.println(Thread.currentThread().getName() + "  start1 : obj" + id);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        }
-        synchronized void syncWait2() {
-            synchronized (this) {
-                System.out.println(Thread.currentThread().getName() + "  start2 : obj" + id);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println(Thread.currentThread().getName() + "  end2 : obj" + id);
-            }
+            System.out.println(Thread.currentThread().getName() + "  end1 : obj" + id);
         }
 
-        void doTask () {
+        synchronized void syncWait2() {
+            System.out.println(Thread.currentThread().getName() + "  start2 : obj" + id);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(Thread.currentThread().getName() + "  end2 : obj" + id);
+        }
+
+        void doTask() {
 
             Thread t1 = new Thread(this::syncWait1);
             Thread t2 = new Thread(this::syncWait2);
