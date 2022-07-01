@@ -20,7 +20,7 @@ public class FanOutFanIn {
     static class FanOutFanInJob {
         ArrayList<Integer> items;
         ArrayList<Thread> threads;
-        volatile int i;
+        Integer i;
 
         public FanOutFanInJob(int count, int threads) {
             this.items = new ArrayList<Integer>(count);
@@ -31,11 +31,7 @@ public class FanOutFanIn {
             }
         }
 
-        private synchronized void printNext(int max) {
-
-            if(i>max) {
-                return;
-            }
+        private void printNext() {
             printItem(i);
             i++;
             //notify(); -> No real need of this?
@@ -48,7 +44,7 @@ public class FanOutFanIn {
         void run() throws InterruptedException {
             i = 1;
             while (i <= 10 ){
-                printNext(10);
+                printNext();
             }
             /**
              * Current Problem: some numbers get printed twice
@@ -58,8 +54,13 @@ public class FanOutFanIn {
             // print 11 to 40 using 4 threads
             for (int j = 0; j < 4; j++) {
                 threads.add(new Thread(() -> {
-                    while (i <= 40)  {
-                       printNext(40);
+                    while (i <= 40) {
+                        synchronized (this) {
+                            //double checked locking
+                            if(i <= 40) {
+                                printNext();
+                            }
+                        }
                     }
                 }));
             }
@@ -71,7 +72,7 @@ public class FanOutFanIn {
 
             // print 41-50 using single thread again
             while (i <= 50 ) {
-                printNext(50);
+                printNext();
             }
         }
     }
