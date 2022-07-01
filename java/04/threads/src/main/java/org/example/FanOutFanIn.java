@@ -20,7 +20,7 @@ public class FanOutFanIn {
     static class FanOutFanInJob {
         ArrayList<Integer> items;
         ArrayList<Thread> threads;
-        int i;
+        Integer i;
 
         public FanOutFanInJob(int count, int threads) {
             this.items = new ArrayList<Integer>(count);
@@ -31,10 +31,10 @@ public class FanOutFanIn {
             }
         }
 
-        private synchronized void printNext() {
+        private void printNext() {
             printItem(i);
             i++;
-            notify();
+            //notify(); -> No real need of this?
         }
 
         private void printItem(int index) {
@@ -42,8 +42,8 @@ public class FanOutFanIn {
         }
 
         void run() throws InterruptedException {
-            i = 0;
-            while (i <= 10) {
+            i = 1;
+            while (i <= 10 ){
                 printNext();
             }
             /**
@@ -55,7 +55,12 @@ public class FanOutFanIn {
             for (int j = 0; j < 4; j++) {
                 threads.add(new Thread(() -> {
                     while (i <= 40) {
-                        printNext();
+                        synchronized (this) {
+                            //double checked locking
+                            if(i <= 40) {
+                                printNext();
+                            }
+                        }
                     }
                 }));
             }
@@ -66,7 +71,7 @@ public class FanOutFanIn {
             }
 
             // print 41-50 using single thread again
-            while (i <= 50) {
+            while (i <= 50 ) {
                 printNext();
             }
         }
